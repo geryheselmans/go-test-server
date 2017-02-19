@@ -1,10 +1,10 @@
 package models
 
 type Author struct {
-	AuthorName string
-	FirstName  string
-	LastName   string
-	Mail       string
+	AuthorName string `json:"authorName"`
+	FirstName  string `json:"firstName"`
+	LastName   string `json:"lastName"`
+	Mail       string `json:"mail"`
 }
 
 type AuthorRepository interface {
