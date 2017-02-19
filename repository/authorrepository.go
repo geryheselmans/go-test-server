@@ -1,9 +1,13 @@
 package repository
 
-import "github.com/geryheselmans/go-test-server/model"
+import (
+	"github.com/geryheselmans/go-test-server/model"
+	"sync"
+)
 
 type InMemoryAuthorRepository struct {
 	storage map[string]*model.Author
+	lock    sync.RWMutex
 }
 
 func NewInMemoryAuthorRepository() InMemoryAuthorRepository {
