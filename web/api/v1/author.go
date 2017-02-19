@@ -8,10 +8,10 @@ import (
 )
 
 type AuthorAPI struct {
-	authorRepository models.AuthorRepository
+	authorRepository model.AuthorRepository
 }
 
-func NewAuthorAPI(authorRepository models.AuthorRepository) *AuthorAPI {
+func NewAuthorAPI(authorRepository model.AuthorRepository) *AuthorAPI {
 	return &AuthorAPI{
 		authorRepository: authorRepository,
 	}
@@ -84,7 +84,7 @@ func (api *AuthorAPI) GetAuthorById(response http.ResponseWriter, request *http.
 
 func (api *AuthorAPI) CreateAuthor(response http.ResponseWriter, request *http.Request) {
 	decoder := json.NewDecoder(request.Body)
-	var author models.Author
+	var author model.Author
 	err1 := decoder.Decode(&author)
 
 	if err1 != nil {

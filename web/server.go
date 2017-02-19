@@ -10,10 +10,10 @@ import (
 
 type Server struct {
 	router           *mux.Router
-	authorRepository models.AuthorRepository
+	authorRepository model.AuthorRepository
 }
 
-func New(authorRepository models.AuthorRepository) *Server {
+func New(authorRepository model.AuthorRepository) *Server {
 	router := mux.NewRouter()
 
 	server := &Server{

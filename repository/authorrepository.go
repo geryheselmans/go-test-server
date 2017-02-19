@@ -3,23 +3,23 @@ package repository
 import "github.com/geryheselmans/go-test-server/model"
 
 type InMemoryAuthorRepository struct {
-	storage map[string]*models.Author
+	storage map[string]*model.Author
 }
 
 func NewInMemoryAuthorRepository() InMemoryAuthorRepository {
 	return InMemoryAuthorRepository{
-		storage: make(map[string]*models.Author),
+		storage: make(map[string]*model.Author),
 	}
 }
 
-func (repo InMemoryAuthorRepository) Save(authorName string, author *models.Author) error {
+func (repo InMemoryAuthorRepository) Save(authorName string, author *model.Author) error {
 	repo.storage[authorName] = author
 
 	return nil
 }
 
-func (repo InMemoryAuthorRepository) FindAll() (authors []*models.Author, err error) {
-	authorList := make([]*models.Author, len(repo.storage))
+func (repo InMemoryAuthorRepository) FindAll() (authors []*model.Author, err error) {
+	authorList := make([]*model.Author, len(repo.storage))
 	i := 0
 	for _, value := range repo.storage {
 		authorList[i] = value
@@ -29,7 +29,7 @@ func (repo InMemoryAuthorRepository) FindAll() (authors []*models.Author, err er
 	return authorList, nil
 }
 
-func (repo InMemoryAuthorRepository) FindByAuthorName(authorName string) (author *models.Author, err error) {
+func (repo InMemoryAuthorRepository) FindByAuthorName(authorName string) (author *model.Author, err error) {
 	return repo.storage[authorName], nil
 }
 
