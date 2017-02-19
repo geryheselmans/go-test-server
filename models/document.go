@@ -4,7 +4,7 @@ import "time"
 
 type Document struct {
 	id      uint64
-	author  string
+	author  Author
 	date    time.Time
 	title   string
 	content string
