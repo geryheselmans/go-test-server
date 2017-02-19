@@ -12,14 +12,14 @@ type Server struct {
 }
 
 func New() *Server {
-	r := mux.NewRouter()
+	router := mux.NewRouter()
 
 	handler := &Server{
-		router: r,
+		router: router,
 	}
 
 	authorAPi := v1.NewAuthorAPI()
-	authorAPi.Register(r.PathPrefix("/api/v1").Subrouter())
+	authorAPi.Register(router.PathPrefix("/api/v1").Subrouter())
 
 	return handler
 }
