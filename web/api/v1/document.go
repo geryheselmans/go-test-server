@@ -14,26 +14,26 @@ func NewDocumentApi() *DocumentApi {
 }
 
 func (api *DocumentApi) Register(router *mux.Router) {
-	router.HandleFunc("/authors/{authorId:[0-9]+}/documents", GetAllDocumentsByAuthor).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}documents", GetAllDocumentsByAuthor).
 		Methods("GET").
 		HeadersRegexp("Accept", "application/(xml|json)")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}/documents/{documentId:[0-9]+}", GetDocumentByIdAndAuthor).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}/documents/{documentId:[0-9]+}", GetDocumentByIdAndAuthor).
 		Methods("GET").
 		HeadersRegexp("Accept", "application/(xml|json)")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}/documents", CreateDocumentByAuthor).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}/documents", CreateDocumentByAuthor).
 		Methods("POST").
 		HeadersRegexp("Content-Type", "application/(xml|json)")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}/documents/{documentId:[0-9]+}", UpdateDocumentByAuthor).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}/documents/{documentId:[0-9]+}", UpdateDocumentByAuthor).
 		Methods("PUT").
 		HeadersRegexp("Content-Type", "application/(xml|json)")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}/documents", DeleteAllDocumentsByAuthor).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}documents", DeleteAllDocumentsByAuthor).
 		Methods("DELETE")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}/documents/{id:[0-9]+}", DeleteDocumentByAuthorAndId).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}/documents/{documentId:[0-9]+}", DeleteDocumentByAuthorAndId).
 		Methods("DELETE")
 }
 

@@ -18,7 +18,7 @@ func (api *AuthorAPI) Register(router *mux.Router) {
 		Methods("GET").
 		HeadersRegexp("Accept", "application/(xml|json)")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}", GetAuthorById).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}", GetAuthorById).
 		Methods("GET").
 		HeadersRegexp("Accept", "application/(xml|json)")
 
@@ -26,14 +26,14 @@ func (api *AuthorAPI) Register(router *mux.Router) {
 		Methods("POST").
 		HeadersRegexp("Content-Type", "application/(xml|json)")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}", UpdateAuthorById).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}", UpdateAuthorById).
 		Methods("PUT").
 		HeadersRegexp("Content-Type", "application/(xml|json)")
 
 	router.HandleFunc("/authors", DeleteAllAuthors).
 		Methods("DELETE")
 
-	router.HandleFunc("/authors/{authorId:[0-9]+}", DeleteAuthorById).
+	router.HandleFunc("/authors/{authorName:[a-z0-9]+}", DeleteAuthorById).
 		Methods("DELETE")
 }
 
@@ -50,7 +50,7 @@ func GetAuthorById(response http.ResponseWriter, request *http.Request) {
 
 	vars := mux.Vars(request)
 
-	fmt.Fprintf(response, "{\"test\":\"%s\"}", vars["authorId"])
+	fmt.Fprintf(response, "{\"test\":\"%s\"}", vars["authorName"])
 }
 
 func CreateAuthor(response http.ResponseWriter, request *http.Request) {
