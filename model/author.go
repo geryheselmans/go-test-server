@@ -9,6 +9,7 @@ type Author struct {
 
 type AuthorRepository interface {
 	Save(authorName string, author *Author) error
+	FindAll() (authors []*Author, err error)
 	FindByAuthorName(authorName string) (author *Author, err error)
 	Delete(authorName string) error
 	Clear() error

@@ -18,6 +18,17 @@ func (repo InMemoryAuthorRepository) Save(authorName string, author *models.Auth
 	return nil
 }
 
+func (repo InMemoryAuthorRepository) FindAll() (authors []*models.Author, err error) {
+	authorList := make([]*models.Author, len(repo.storage))
+	i := 0
+	for _, value := range repo.storage {
+		authorList[i] = value
+		i++
+	}
+
+	return authorList, nil
+}
+
 func (repo InMemoryAuthorRepository) FindByAuthorName(authorName string) (author *models.Author, err error) {
 	return repo.storage[authorName], nil
 }
