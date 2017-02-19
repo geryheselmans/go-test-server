@@ -1,10 +1,10 @@
 package web
 
 import (
+	"github.com/geryheselmans/go-test-server/web/api/v1"
 	"github.com/gorilla/mux"
-	"net/http"
-	"fmt"
 	"log"
+	"net/http"
 )
 
 type Server struct {
@@ -18,9 +18,8 @@ func New() *Server {
 		router: r,
 	}
 
-	r.HandleFunc("/hello", func(response http.ResponseWriter, request *http.Request) {
-		fmt.Fprint(response, "Hello world")
-	})
+	authorAPi := v1.NewAuthorAPI()
+	authorAPi.Register(r.PathPrefix("/api/v1").Subrouter())
 
 	return handler
 }
