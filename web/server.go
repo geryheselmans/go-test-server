@@ -26,9 +26,6 @@ func New(authorRepository models.AuthorRepository) *Server {
 	authorV1APi := v1.NewAuthorAPI(authorRepository)
 	authorV1APi.Register(apiV1Router)
 
-	documentV1Api := v1.NewDocumentApi()
-	documentV1Api.Register(apiV1Router)
-
 	return server
 }
 
