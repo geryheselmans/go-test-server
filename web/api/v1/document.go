@@ -14,7 +14,7 @@ func NewDocumentApi() *DocumentApi {
 }
 
 func (api *DocumentApi) Register(router *mux.Router) {
-	router.HandleFunc("document/hello", func(response http.ResponseWriter, request *http.Request) {
+	router.HandleFunc("/document/hello", func(response http.ResponseWriter, request *http.Request) {
 		fmt.Fprint(response, "Hello world")
 	})
 }
