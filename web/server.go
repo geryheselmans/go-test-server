@@ -18,8 +18,13 @@ func New() *Server {
 		router: router,
 	}
 
-	authorAPi := v1.NewAuthorAPI()
-	authorAPi.Register(router.PathPrefix("/api/v1").Subrouter())
+	apiV1Router := router.PathPrefix("/api/v1").Subrouter()
+
+	authorV1APi := v1.NewAuthorAPI()
+	authorV1APi.Register(apiV1Router)
+
+	documentV1Api := v1.NewDocumentApi()
+	documentV1Api.Register(apiV1Router)
 
 	return handler
 }
