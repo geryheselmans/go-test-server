@@ -1,14 +1,14 @@
 package models
 
 type Author struct {
-	authorName string
-	firstName  string
-	lastName   string
-	mail       string
+	AuthorName string
+	FirstName  string
+	LastName   string
+	Mail       string
 }
 
 type AuthorRepository interface {
-	Save(author *Author) error
+	Save(authorName string, author *Author) error
 	FindByAuthorName(authorName string) (author *Author, err error)
 	Delete(authorName string) error
 	Clear() error
@@ -25,16 +25,16 @@ func (author *Author) FindByAuthorName(authorStorage AuthorRepository, authorNam
 		return err
 	}
 
-	author.authorName = foundAuthor.authorName
-	author.firstName = foundAuthor.firstName
-	author.lastName = foundAuthor.lastName
-	author.mail = author.mail
+	author.AuthorName = foundAuthor.AuthorName
+	author.FirstName = foundAuthor.FirstName
+	author.LastName = foundAuthor.LastName
+	author.Mail = author.Mail
 
 	return nil
 }
 
 func (author *Author) Save(authorStorage AuthorRepository) error {
-	return authorStorage.Save(author)
+	return authorStorage.Save(author.AuthorName, author)
 }
 
 func (author *Author) Delete(authorStorage AuthorRepository, authorName string) error {

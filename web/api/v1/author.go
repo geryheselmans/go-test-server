@@ -2,15 +2,19 @@ package v1
 
 import (
 	"fmt"
+	"github.com/geryheselmans/go-test-server/model"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 type AuthorAPI struct {
+	authorRepository models.AuthorRepository
 }
 
-func NewAuthorAPI() *AuthorAPI {
-	return &AuthorAPI{}
+func NewAuthorAPI(authorRepository models.AuthorRepository) *AuthorAPI {
+	return &AuthorAPI{
+		authorRepository: authorRepository,
+	}
 }
 
 func (api *AuthorAPI) Register(router *mux.Router) {
