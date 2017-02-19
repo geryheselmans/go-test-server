@@ -14,10 +14,6 @@ type AuthorRepository interface {
 	Clear() error
 }
 
-func NewAuthor(authorName string, firstName string, lastName string, mail string) *Author {
-	return &Author{authorName, firstName, lastName, mail}
-}
-
 func (author *Author) FindByAuthorName(authorStorage AuthorRepository, authorName string) error {
 	foundAuthor, err := authorStorage.FindByAuthorName(authorName)
 
