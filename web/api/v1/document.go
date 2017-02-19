@@ -61,10 +61,10 @@ func CreateDocumentByAuthor(response http.ResponseWriter, request *http.Request)
 	response.WriteHeader(http.StatusOK)
 }
 
-func DeleteDocumentByAuthorAndId(response http.ResponseWriter, request *http.Request) {
+func DeleteAllDocumentsByAuthor(response http.ResponseWriter, request *http.Request) {
 	response.WriteHeader(http.StatusOK)
 }
 
-func DeleteAllDocumentsByAuthor(response http.ResponseWriter, request *http.Request) {
+func DeleteDocumentByAuthorAndId(response http.ResponseWriter, request *http.Request) {
 	response.WriteHeader(http.StatusOK)
 }
