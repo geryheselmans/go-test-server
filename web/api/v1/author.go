@@ -92,7 +92,7 @@ func (api *AuthorAPI) CreateAuthor(response http.ResponseWriter, request *http.R
 		return
 	}
 
-	err2 := api.authorRepository.Save(author.AuthorName, &author)
+	err2 := author.Save(api.authorRepository)
 	if err2 != nil {
 		response.WriteHeader(http.StatusInternalServerError)
 		return
