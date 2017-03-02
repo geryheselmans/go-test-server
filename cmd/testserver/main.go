@@ -14,4 +14,6 @@ func main() {
 	h := web.New(inMemoryAuthorRepository)
 
 	h.Run()
+
+	log.Info("Stop service")
 }
