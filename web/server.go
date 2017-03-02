@@ -4,7 +4,7 @@ import (
 	"github.com/geryheselmans/go-test-server/model"
 	"github.com/geryheselmans/go-test-server/web/api/v1"
 	"github.com/gorilla/mux"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -32,5 +32,6 @@ func New(authorRepository model.AuthorRepository) *Server {
 func (handler *Server) Run() {
 	http.Handle("/", handler.router)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	err := http.ListenAndServe(":8080", nil)
+	log.WithError(err).Fatal("Error while starting serivce")
 }
