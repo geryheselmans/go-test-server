@@ -4,6 +4,9 @@ import (
 	"github.com/geryheselmans/go-test-server/repository"
 	"github.com/geryheselmans/go-test-server/web"
 	log "github.com/sirupsen/logrus"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -13,7 +16,17 @@ func main() {
 
 	h := web.New(inMemoryAuthorRepository)
 
-	h.Run()
+	go h.Run()
 
-	log.Info("Stop service")
+	sigChan := make(chan os.Signal)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+
+	select {
+	case <-sigChan:
+		log.Info("Received interrupt, start shutdown procedure")
+	case err := <-h.ErrChan():
+		log.WithError(err).Error("Error while starting service")
+	}
+
+	log.Info("Goodbye")
 }
