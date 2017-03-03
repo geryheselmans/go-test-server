@@ -4,13 +4,13 @@ import (
 	"github.com/geryheselmans/go-test-server/model"
 	"github.com/geryheselmans/go-test-server/web/api/v1"
 	"github.com/gorilla/mux"
-	"log"
 	"net/http"
 )
 
 type Server struct {
 	router           *mux.Router
 	authorRepository model.AuthorRepository
+	errChan          chan error
 }
 
 func New(authorRepository model.AuthorRepository) *Server {
@@ -19,6 +19,7 @@ func New(authorRepository model.AuthorRepository) *Server {
 	server := &Server{
 		router:           router,
 		authorRepository: authorRepository,
+		errChan:          make(chan error),
 	}
 
 	apiV1Router := router.PathPrefix("/api/v1").Subrouter()
@@ -32,5 +33,13 @@ func New(authorRepository model.AuthorRepository) *Server {
 func (handler *Server) Run() {
 	http.Handle("/", handler.router)
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	err := http.ListenAndServe(":8080", nil)
+
+	if err != nil {
+		handler.errChan <- err
+	}
+}
+
+func (handler *Server) ErrChan() <-chan error {
+	return handler.errChan
 }
