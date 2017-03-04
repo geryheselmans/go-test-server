@@ -28,6 +28,8 @@ func main() {
 		}
 	}
 
+	zap.ReplaceGlobals(logger)
+
 	inMemoryAuthorRepository := repository.NewInMemoryAuthorRepository()
 
 	h := web.New(logger, inMemoryAuthorRepository)
