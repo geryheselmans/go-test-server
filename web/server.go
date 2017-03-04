@@ -14,7 +14,11 @@ type Server struct {
 	errChan          chan error
 }
 
-func New(log *zap.Logger, authorRepository model.AuthorRepository) *Server {
+var log *zap.Logger
+
+func New(logger *zap.Logger, authorRepository model.AuthorRepository) *Server {
+	log = logger
+
 	router := mux.NewRouter()
 
 	server := &Server{
@@ -32,7 +36,8 @@ func New(log *zap.Logger, authorRepository model.AuthorRepository) *Server {
 }
 
 func (handler *Server) Run() {
-	http.Handle("/", handler.router)
+	loggingMiddleware := loggingMiddleware(handler.router)
+	http.Handle("/", loggingMiddleware)
 
 	err := http.ListenAndServe(":8080", nil)
 
