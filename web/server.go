@@ -9,7 +9,7 @@ import (
 )
 
 type Server struct {
-	router           *mux.Router
+	muxRouter        *mux.Router
 	authorRepository model.AuthorRepository
 	errChan          chan error
 }
@@ -22,7 +22,7 @@ func New(logger *zap.Logger, authorRepository model.AuthorRepository) *Server {
 	router := mux.NewRouter()
 
 	server := &Server{
-		router:           router,
+		muxRouter:        router,
 		authorRepository: authorRepository,
 		errChan:          make(chan error),
 	}
@@ -35,17 +35,17 @@ func New(logger *zap.Logger, authorRepository model.AuthorRepository) *Server {
 	return server
 }
 
-func (handler *Server) Run() {
-	loggingMiddleware := loggingMiddleware(handler.router)
+func (s *Server) Run() {
+	loggingMiddleware := loggingMiddleware(s.muxRouter)
 	http.Handle("/", loggingMiddleware)
 
 	err := http.ListenAndServe(":8080", nil)
 
 	if err != nil {
-		handler.errChan <- err
+		s.errChan <- err
 	}
 }
 
-func (handler *Server) ErrChan() chan error {
-	return handler.errChan
+func (s *Server) ErrChan() chan error {
+	return s.errChan
 }
