@@ -3,7 +3,8 @@ package main
 import (
 	"github.com/geryheselmans/go-test-server/repository"
 	"github.com/geryheselmans/go-test-server/web"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,9 +13,14 @@ import (
 func main() {
 	inMemoryAuthorRepository := repository.NewInMemoryAuthorRepository()
 
-	log.Info("Starting service")
+	logger, err := zap.NewDevelopmentConfig().Build()
+	if err != nil {
+		log.Fatalf("%+v\n", err)
+	}
 
-	h := web.New(inMemoryAuthorRepository)
+	logger.Info("Starting service")
+
+	h := web.New(logger, inMemoryAuthorRepository)
 
 	go h.Run()
 
@@ -23,10 +29,10 @@ func main() {
 
 	select {
 	case <-sigChan:
-		log.Info("Received interrupt, start shutdown procedure")
+		logger.Info("Received stop signal, start shutting down")
 	case err := <-h.ErrChan():
-		log.WithError(err).Error("Error while starting service")
+		logger.Error("Error while starting service", zap.Error(err))
 	}
 
-	log.Info("Goodbye")
+	logger.Info("Goodbye")
 }

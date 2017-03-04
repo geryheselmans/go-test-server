@@ -4,6 +4,7 @@ import (
 	"github.com/geryheselmans/go-test-server/model"
 	"github.com/geryheselmans/go-test-server/web/api/v1"
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -13,7 +14,7 @@ type Server struct {
 	errChan          chan error
 }
 
-func New(authorRepository model.AuthorRepository) *Server {
+func New(log *zap.Logger, authorRepository model.AuthorRepository) *Server {
 	router := mux.NewRouter()
 
 	server := &Server{
@@ -24,7 +25,7 @@ func New(authorRepository model.AuthorRepository) *Server {
 
 	apiV1Router := router.PathPrefix("/api/v1").Subrouter()
 
-	authorV1APi := v1.NewAuthorAPI(authorRepository)
+	authorV1APi := v1.NewAuthorAPI(log, authorRepository)
 	authorV1APi.Register(apiV1Router)
 
 	return server

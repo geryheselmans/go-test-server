@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/geryheselmans/go-test-server/model"
 	"github.com/gorilla/mux"
-	log "github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -12,7 +12,11 @@ type AuthorAPI struct {
 	authorRepository model.AuthorRepository
 }
 
-func NewAuthorAPI(authorRepository model.AuthorRepository) *AuthorAPI {
+var log *zap.Logger
+
+func NewAuthorAPI(log *zap.Logger, authorRepository model.AuthorRepository) *AuthorAPI {
+	log = log
+
 	return &AuthorAPI{
 		authorRepository: authorRepository,
 	}
@@ -46,7 +50,7 @@ func (api *AuthorAPI) GetAllAuthors(response http.ResponseWriter, request *http.
 	authors, err := api.authorRepository.FindAll()
 
 	if err != nil {
-		log.WithError(err).Error("Error with find all authors")
+		log.Error("Error with find all authors", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 
@@ -57,7 +61,7 @@ func (api *AuthorAPI) GetAllAuthors(response http.ResponseWriter, request *http.
 
 	err = encoder.Encode(authors)
 	if err != nil {
-		log.WithError(err).Error("Error with json encode")
+		log.Error("Error with json encode", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 
@@ -71,7 +75,7 @@ func (api *AuthorAPI) GetAuthorById(response http.ResponseWriter, request *http.
 	author, err := api.authorRepository.FindByAuthorName(vars["authorName"])
 
 	if err != nil {
-		log.WithError(err).Error("Error with find by author name")
+		log.Error("Error with find by author name", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 
@@ -87,7 +91,7 @@ func (api *AuthorAPI) GetAuthorById(response http.ResponseWriter, request *http.
 
 	err = encoder.Encode(author)
 	if err != nil {
-		log.WithError(err).Error("Error with json encode")
+		log.Error("Error with json encode", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 
@@ -101,7 +105,7 @@ func (api *AuthorAPI) CreateAuthor(response http.ResponseWriter, request *http.R
 	err := decoder.Decode(&author)
 
 	if err != nil {
-		log.WithError(err).Error("Error with json decode")
+		log.Error("Error with json decode", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 
@@ -110,7 +114,7 @@ func (api *AuthorAPI) CreateAuthor(response http.ResponseWriter, request *http.R
 
 	err = author.Save(api.authorRepository)
 	if err != nil {
-		log.WithError(err).Error("Error with save author")
+		log.Error("Error with save author", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 
@@ -128,7 +132,7 @@ func (api *AuthorAPI) DeleteAllAuthors(response http.ResponseWriter, request *ht
 	err := api.authorRepository.Clear()
 
 	if err != nil {
-		log.WithError(err).Error("Error with delete all")
+		log.Error("Error with delete all", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 	} else {
@@ -142,7 +146,7 @@ func (api *AuthorAPI) DeleteAuthorById(response http.ResponseWriter, request *ht
 	err := api.authorRepository.Delete(vars["authorName"])
 
 	if err != nil {
-		log.WithError(err).Error("Error with delete author")
+		log.Error("Error with delete author", zap.Error(err))
 
 		response.WriteHeader(http.StatusInternalServerError)
 	} else {
