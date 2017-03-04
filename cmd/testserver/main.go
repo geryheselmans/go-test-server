@@ -11,9 +11,21 @@ import (
 )
 
 func main() {
-	logger, err := zap.NewDevelopmentConfig().Build()
-	if err != nil {
-		log.Fatalf("%+v\n", err)
+	logConfig := os.Getenv("LOGCONFIG")
+
+	var logger *zap.Logger
+	var err error
+
+	if logConfig == "PROD" {
+		logger, err = zap.NewProduction()
+		if err != nil {
+			log.Fatalf("%+v\n", err)
+		}
+	} else {
+		logger, err = zap.NewDevelopment()
+		if err != nil {
+			log.Fatalf("%+v\n", err)
+		}
 	}
 
 	inMemoryAuthorRepository := repository.NewInMemoryAuthorRepository()
