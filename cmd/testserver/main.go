@@ -11,17 +11,16 @@ import (
 )
 
 func main() {
-	inMemoryAuthorRepository := repository.NewInMemoryAuthorRepository()
-
 	logger, err := zap.NewDevelopmentConfig().Build()
 	if err != nil {
 		log.Fatalf("%+v\n", err)
 	}
 
-	logger.Info("Starting service")
+	inMemoryAuthorRepository := repository.NewInMemoryAuthorRepository()
 
 	h := web.New(logger, inMemoryAuthorRepository)
 
+	logger.Info("Starting service")
 	go h.Run()
 
 	sigChan := make(chan os.Signal)
