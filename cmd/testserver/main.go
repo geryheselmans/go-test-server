@@ -40,7 +40,7 @@ func main() {
 
 	select {
 	case <-sigChan:
-		logger.Info("Received stop signal, start shutting down")
+		logger.Info("Received stop signal")
 	case err := <-h.ErrChan():
 		logger.Error("Error while starting service", zap.Error(err))
 	}
