@@ -14,8 +14,8 @@ type AuthorAPI struct {
 
 var log *zap.Logger
 
-func NewAuthorAPI(log *zap.Logger, authorRepository model.AuthorRepository) *AuthorAPI {
-	log = log
+func NewAuthorAPI(logger *zap.Logger, authorRepository model.AuthorRepository) *AuthorAPI {
+	log = logger
 
 	return &AuthorAPI{
 		authorRepository: authorRepository,
